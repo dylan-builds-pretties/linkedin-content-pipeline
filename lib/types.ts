@@ -1,5 +1,5 @@
-// Simplified stage type - only two folders now
-export type Stage = "ideas" | "posts";
+// Stage types for content folders
+export type Stage = "ideas" | "posts" | "assets";
 
 // Post status replaces the old stage-based workflow
 export type PostStatus = "draft" | "ready_for_review" | "scheduled" | "published";
@@ -45,6 +45,29 @@ export interface Post {
 }
 
 export type ContentItem = Idea | Post;
+
+// Content asset types for the content generator
+export type ContentAssetType = "image" | "video" | "carousel" | "document" | "html";
+
+export interface ContentAsset {
+  id: string;
+  name: string;
+  description?: string;
+  type: ContentAssetType;
+  mimeType: string;
+  fileName: string;        // Original file name
+  filePath: string;        // Path relative to public/uploads
+  thumbnailPath?: string;  // For videos/documents, optional thumbnail
+  fileSize: number;        // In bytes
+  dimensions?: {           // For images/videos
+    width: number;
+    height: number;
+  };
+  duration?: number;       // For videos, in seconds
+  tags: string[];
+  createdAt: string;
+  updatedAt: string;
+}
 
 export interface PipelineStats {
   ideas: number;

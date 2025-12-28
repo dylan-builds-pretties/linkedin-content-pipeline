@@ -1,0 +1,17 @@
+{
+  "id": "mock-image-3",
+  "name": "Quote Graphic - Leadership",
+  "description": "Inspirational quote about leadership",
+  "type": "image",
+  "mimeType": "image/png",
+  "fileName": "leadership-quote.png",
+  "filePath": "https://picsum.photos/seed/quote/1080/1080",
+  "fileSize": 180000,
+  "dimensions": {
+    "width": 1080,
+    "height": 1080
+  },
+  "tags": ["quote", "leadership", "inspiration"],
+  "createdAt": "2025-12-23T11:00:00.000Z",
+  "updatedAt": "2025-12-23T11:00:00.000Z"
+}

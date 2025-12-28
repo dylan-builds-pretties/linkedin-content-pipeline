@@ -4,10 +4,8 @@ import { useState } from "react";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import { KanbanColumn } from "./kanban-column";
 import { PostCard } from "./post-card";
+import { PostFullView } from "./post-full-view";
 import { ScheduleDialog } from "@/components/content/schedule-dialog";
-import { Button } from "@/components/ui/button";
-import { Plus, Archive } from "lucide-react";
-import Link from "next/link";
 import type { Post, PostStatus } from "@/lib/types";
 
 interface KanbanBoardProps {
@@ -20,6 +18,15 @@ export function KanbanBoard({ initialPosts = [] }: KanbanBoardProps) {
   // Schedule dialog state
   const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
   const [postToSchedule, setPostToSchedule] = useState<Post | null>(null);
+
+  // New post dialog state
+  const [newPostDialogOpen, setNewPostDialogOpen] = useState(false);
+  const [createPostStatus, setCreatePostStatus] = useState<PostStatus>("draft");
+
+  const handleCreatePost = (status: PostStatus) => {
+    setCreatePostStatus(status);
+    setNewPostDialogOpen(true);
+  };
 
   // Filter posts by status
   const draftItems = posts.filter((p) => p.status === "draft");
@@ -136,14 +143,8 @@ export function KanbanBoard({ initialPosts = [] }: KanbanBoardProps) {
             count={draftItems.length}
             color="yellow"
             droppableId="drafts"
-            footer={
-              <Button variant="ghost" size="sm" className="w-full justify-start text-muted-foreground" asChild>
-                <Link href="/posts/new">
-                  <Plus className="mr-2 h-4 w-4" />
-                  New Draft
-                </Link>
-              </Button>
-            }
+            status="draft"
+            onCreatePost={handleCreatePost}
           >
             {draftItems.map((post, index) => (
               <Draggable key={post.id} draggableId={post.id} index={index}>
@@ -167,14 +168,8 @@ export function KanbanBoard({ initialPosts = [] }: KanbanBoardProps) {
             count={readyForReview.length}
             color="blue"
             droppableId="ready_for_review"
-            footer={
-              <Button variant="ghost" size="sm" className="w-full justify-start text-muted-foreground" asChild>
-                <Link href="/posts/new?status=ready_for_review">
-                  <Plus className="mr-2 h-4 w-4" />
-                  New Draft
-                </Link>
-              </Button>
-            }
+            status="ready_for_review"
+            onCreatePost={handleCreatePost}
           >
             {readyForReview.map((post, index) => (
               <Draggable key={post.id} draggableId={post.id} index={index}>
@@ -198,6 +193,8 @@ export function KanbanBoard({ initialPosts = [] }: KanbanBoardProps) {
             count={scheduled.length}
             color="orange"
             droppableId="scheduled"
+            status="scheduled"
+            onCreatePost={handleCreatePost}
           >
             {scheduled.map((post, index) => (
               <Draggable key={post.id} draggableId={post.id} index={index}>
@@ -221,29 +218,23 @@ export function KanbanBoard({ initialPosts = [] }: KanbanBoardProps) {
             count={published.length}
             color="green"
             droppableId="published"
+            status="published"
+            onCreatePost={handleCreatePost}
           >
-            {published.length > 0 ? (
-              published.map((post, index) => (
-                <Draggable key={post.id} draggableId={post.id} index={index}>
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      className={snapshot.isDragging ? "opacity-90" : ""}
-                    >
-                      <PostCard post={post} showMetrics />
-                    </div>
-                  )}
-                </Draggable>
-              ))
-            ) : (
-              <div className="flex flex-col items-center justify-center py-8 text-center text-muted-foreground">
-                <Archive className="mb-2 h-8 w-8" />
-                <p className="text-sm">No published posts yet</p>
-                <p className="text-xs mt-1">Drag scheduled posts here to publish</p>
-              </div>
-            )}
+            {published.map((post, index) => (
+              <Draggable key={post.id} draggableId={post.id} index={index}>
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    className={snapshot.isDragging ? "opacity-90" : ""}
+                  >
+                    <PostCard post={post} showMetrics />
+                  </div>
+                )}
+              </Draggable>
+            ))}
           </KanbanColumn>
         </div>
       </DragDropContext>
@@ -258,6 +249,16 @@ export function KanbanBoard({ initialPosts = [] }: KanbanBoardProps) {
           onScheduled={handleScheduled}
         />
       )}
+
+      {/* New Post Dialog */}
+      <PostFullView
+        open={newPostDialogOpen}
+        onOpenChange={setNewPostDialogOpen}
+        initialStatus={createPostStatus}
+        onCreate={(newPost) => {
+          setPosts((prev) => [newPost, ...prev]);
+        }}
+      />
     </>
   );
 }

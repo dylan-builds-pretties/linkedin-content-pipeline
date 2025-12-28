@@ -1,0 +1,18 @@
+{
+  "id": "mock-video-1",
+  "name": "Feature Demo Video",
+  "description": "Quick demo showing the new dashboard features",
+  "type": "video",
+  "mimeType": "video/mp4",
+  "fileName": "feature-demo.mp4",
+  "filePath": "https://www.w3schools.com/html/mov_bbb.mp4",
+  "fileSize": 5242880,
+  "dimensions": {
+    "width": 1920,
+    "height": 1080
+  },
+  "duration": 45,
+  "tags": ["demo", "product", "tutorial"],
+  "createdAt": "2025-12-25T09:00:00.000Z",
+  "updatedAt": "2025-12-25T09:00:00.000Z"
+}

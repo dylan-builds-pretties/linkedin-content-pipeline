@@ -1,0 +1,11 @@
+{
+  "id": "gen-1766938800842-1v9t3d",
+  "status": "completed",
+  "progress": 100,
+  "message": "Video generation complete",
+  "startedAt": "2025-12-28T16:20:00.842Z",
+  "rawVideoPath": "/Users/dylangoren/Desktop/coding-projects/deleteme/new_projects/test_social_media_writer/demos/artifacts/raw/video-1766938800024.webm",
+  "eventsPath": "/Users/dylangoren/Desktop/coding-projects/deleteme/new_projects/test_social_media_writer/demos/artifacts/raw/video-1766938800024.events.json",
+  "outputPath": "/uploads/videos/video-1766938800024-gen-1766938800842-1v9t3d.webm",
+  "completedAt": "2025-12-28T16:20:05.429Z"
+}

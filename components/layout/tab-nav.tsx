@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 
 const tabs = [
   { name: "Guidelines", href: "/guidelines" },
+  { name: "Creator", href: "/generate" },
   { name: "Ideas", href: "/ideas" },
   { name: "Posts", href: "/" },
 ];

@@ -1,0 +1,17 @@
+{
+  "id": "mock-image-2",
+  "name": "Team Photo 2025",
+  "description": "Annual team photo for company culture posts",
+  "type": "image",
+  "mimeType": "image/jpeg",
+  "fileName": "team-photo-2025.jpg",
+  "filePath": "https://picsum.photos/seed/team/800/600",
+  "fileSize": 312000,
+  "dimensions": {
+    "width": 800,
+    "height": 600
+  },
+  "tags": ["team", "culture", "people"],
+  "createdAt": "2025-12-26T14:30:00.000Z",
+  "updatedAt": "2025-12-26T14:30:00.000Z"
+}

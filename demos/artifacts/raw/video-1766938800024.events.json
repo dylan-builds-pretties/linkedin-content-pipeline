@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30
+  },
+  "events": [
+    {
+      "t": 1.237,
+      "type": "wait",
+      "duration": 1
+    }
+  ]
+}

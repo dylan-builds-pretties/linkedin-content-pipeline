@@ -91,6 +91,9 @@ export async function PUT(request: Request, { params }: RouteParams) {
   }
 }
 
+// PATCH update idea (alias for PUT)
+export const PATCH = PUT;
+
 // DELETE idea
 export async function DELETE(request: Request, { params }: RouteParams) {
   try {

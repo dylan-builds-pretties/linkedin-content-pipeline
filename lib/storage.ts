@@ -6,6 +6,7 @@ import type { Stage, Post, PostStatus, PipelineStats } from "./types";
 const STAGE_PATHS: Record<Stage, string> = {
   ideas: "content/ideas",
   posts: "content/posts",
+  assets: "content/assets",
 };
 
 // Get the absolute path for a stage

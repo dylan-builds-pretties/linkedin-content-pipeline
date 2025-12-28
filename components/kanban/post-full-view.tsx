@@ -10,7 +10,8 @@ import {
   ThumbsUp,
   MessageCircle,
   Globe,
-  ExternalLink
+  ExternalLink,
+  Plus
 } from "lucide-react";
 import {
   Dialog,
@@ -32,11 +33,13 @@ import {
 import type { Post, PostStatus } from "@/lib/types";
 
 interface PostFullViewProps {
-  post: Post;
+  post?: Post;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSave?: (updates: Partial<Post>) => Promise<void>;
+  onCreate?: (post: Post) => void;
   onDelete?: () => Promise<void>;
+  initialStatus?: PostStatus;
 }
 
 const STATUS_OPTIONS: { value: PostStatus; label: string }[] = [
@@ -75,44 +78,76 @@ export function PostFullView({
   open,
   onOpenChange,
   onSave,
+  onCreate,
   onDelete,
+  initialStatus = "draft",
 }: PostFullViewProps) {
   const router = useRouter();
-  const [isEditing, setIsEditing] = useState(false);
-  const [content, setContent] = useState(post.content);
-  const [status, setStatus] = useState<PostStatus>(post.status);
-  const [scheduledDate, setScheduledDate] = useState(post.scheduledDate || "");
-  const [scheduledTime, setScheduledTime] = useState(post.scheduledTime || "");
-  const [timezone, setTimezone] = useState(post.timezone || "America/New_York");
+  const isCreateMode = !post;
+
+  const [isEditing, setIsEditing] = useState(isCreateMode);
+  const [content, setContent] = useState(post?.content || "");
+  const [status, setStatus] = useState<PostStatus>(post?.status || initialStatus);
+  const [scheduledDate, setScheduledDate] = useState(post?.scheduledDate || "");
+  const [scheduledTime, setScheduledTime] = useState(post?.scheduledTime || "");
+  const [timezone, setTimezone] = useState(post?.timezone || "America/New_York");
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const hasChanges =
-    content !== post.content ||
-    status !== post.status ||
-    scheduledDate !== (post.scheduledDate || "") ||
-    scheduledTime !== (post.scheduledTime || "") ||
-    timezone !== (post.timezone || "America/New_York");
+  const hasChanges = isCreateMode
+    ? content.trim().length > 0
+    : content !== post.content ||
+      status !== post.status ||
+      scheduledDate !== (post.scheduledDate || "") ||
+      scheduledTime !== (post.scheduledTime || "") ||
+      timezone !== (post.timezone || "America/New_York");
 
   const characterCount = content.length;
   const statusBadge = getStatusBadge(status);
 
   const handleSave = async () => {
-    if (!onSave) return;
-    setIsSaving(true);
-    try {
-      await onSave({
-        content,
-        status,
-        scheduledDate: status === "scheduled" ? scheduledDate : undefined,
-        scheduledTime: status === "scheduled" ? scheduledTime : undefined,
-        timezone: status === "scheduled" ? timezone : undefined,
-        characterCount,
-      });
-      setIsEditing(false);
-    } finally {
-      setIsSaving(false);
+    if (isCreateMode) {
+      if (!content.trim()) return;
+      setIsSaving(true);
+      try {
+        const res = await fetch("/api/posts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            content,
+            sourceIdea: "manual",
+            author: AUTHOR_NAME,
+            status,
+            scheduledDate: status === "scheduled" ? scheduledDate : undefined,
+            scheduledTime: status === "scheduled" ? scheduledTime : undefined,
+            timezone: status === "scheduled" ? timezone : undefined,
+          }),
+        });
+        if (!res.ok) throw new Error("Failed to create post");
+        const newPost = await res.json();
+        onCreate?.(newPost);
+        onOpenChange(false);
+        router.refresh();
+      } finally {
+        setIsSaving(false);
+      }
+    } else {
+      if (!onSave) return;
+      setIsSaving(true);
+      try {
+        await onSave({
+          content,
+          status,
+          scheduledDate: status === "scheduled" ? scheduledDate : undefined,
+          scheduledTime: status === "scheduled" ? scheduledTime : undefined,
+          timezone: status === "scheduled" ? timezone : undefined,
+          characterCount,
+        });
+        setIsEditing(false);
+      } finally {
+        setIsSaving(false);
+      }
     }
   };
 
@@ -130,18 +165,19 @@ export function PostFullView({
 
   const handleOpenChange = (newOpen: boolean) => {
     if (newOpen) {
-      setContent(post.content);
-      setStatus(post.status);
-      setScheduledDate(post.scheduledDate || "");
-      setScheduledTime(post.scheduledTime || "");
-      setTimezone(post.timezone || "America/New_York");
+      setContent(post?.content || "");
+      setStatus(post?.status || initialStatus);
+      setScheduledDate(post?.scheduledDate || "");
+      setScheduledTime(post?.scheduledTime || "");
+      setTimezone(post?.timezone || "America/New_York");
       setShowDeleteConfirm(false);
-      setIsEditing(false);
+      setIsEditing(isCreateMode);
     }
     onOpenChange(newOpen);
   };
 
   const formatHeaderDate = () => {
+    if (isCreateMode) return "New Post";
     if (post.publishedAt) {
       return `Published on ${new Date(post.publishedAt).toLocaleDateString("en-US", {
         month: "short",
@@ -219,6 +255,7 @@ export function PostFullView({
                   onChange={(e) => setContent(e.target.value)}
                   className="min-h-[200px] text-sm resize-none"
                   placeholder="Write your post content..."
+                  autoFocus={isCreateMode}
                 />
                 <div className="flex justify-end">
                   <span className={cn("text-xs", characterCount > MAX_CHARS ? "text-red-500" : "text-muted-foreground")}>
@@ -228,13 +265,13 @@ export function PostFullView({
               </div>
             ) : (
               <p className="text-sm whitespace-pre-wrap leading-relaxed">
-                {content}
+                {content || <span className="text-muted-foreground italic">No content yet...</span>}
               </p>
             )}
           </div>
 
           {/* Metrics for published posts */}
-          {post.status === "published" && post.metrics && (
+          {!isCreateMode && post.status === "published" && post.metrics && (
             <div className="px-4 py-2 border-t flex items-center gap-4 text-sm text-muted-foreground">
               <span className="flex items-center gap-1">
                 <ThumbsUp className="h-4 w-4" />
@@ -322,7 +359,7 @@ export function PostFullView({
           {/* Action Buttons */}
           <div className="flex items-center justify-between pt-1">
             <div className="flex items-center gap-2">
-              {onDelete && !showDeleteConfirm && (
+              {!isCreateMode && onDelete && !showDeleteConfirm && (
                 <Button
                   variant="ghost"
                   size="sm"
@@ -356,7 +393,7 @@ export function PostFullView({
             </div>
 
             <div className="flex items-center gap-2">
-              {!isEditing ? (
+              {!isCreateMode && !isEditing && (
                 <Button
                   variant="outline"
                   size="sm"
@@ -365,7 +402,8 @@ export function PostFullView({
                   <Pencil className="h-4 w-4 mr-1" />
                   Edit Content
                 </Button>
-              ) : (
+              )}
+              {!isCreateMode && isEditing && (
                 <Button
                   variant="outline"
                   size="sm"
@@ -378,15 +416,26 @@ export function PostFullView({
                 </Button>
               )}
 
-              {onSave && hasChanges && (
+              {isCreateMode ? (
                 <Button
                   size="sm"
                   onClick={handleSave}
-                  disabled={isSaving}
+                  disabled={isSaving || !content.trim()}
                 >
-                  <Save className="h-4 w-4 mr-1" />
-                  {isSaving ? "Saving..." : "Save"}
+                  <Plus className="h-4 w-4 mr-1" />
+                  {isSaving ? "Creating..." : "Create Post"}
                 </Button>
+              ) : (
+                hasChanges && (
+                  <Button
+                    size="sm"
+                    onClick={handleSave}
+                    disabled={isSaving}
+                  >
+                    <Save className="h-4 w-4 mr-1" />
+                    {isSaving ? "Saving..." : "Save"}
+                  </Button>
+                )
               )}
             </div>
           </div>

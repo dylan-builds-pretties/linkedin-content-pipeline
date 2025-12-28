@@ -1,0 +1,13 @@
+{
+  "id": "mock-document-1",
+  "name": "Industry Report 2025",
+  "description": "PDF report to share as document post",
+  "type": "document",
+  "mimeType": "application/pdf",
+  "fileName": "industry-report-2025.pdf",
+  "filePath": "https://picsum.photos/seed/document/800/1100",
+  "fileSize": 2340000,
+  "tags": ["report", "industry", "research"],
+  "createdAt": "2025-12-22T08:00:00.000Z",
+  "updatedAt": "2025-12-22T08:00:00.000Z"
+}

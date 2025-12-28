@@ -1,15 +1,19 @@
 "use client";
 
 import { Droppable } from "@hello-pangea/dnd";
+import { Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import type { PostStatus } from "@/lib/types";
 
 interface KanbanColumnProps {
   title: string;
   count: number;
   color: "purple" | "yellow" | "blue" | "orange" | "green" | "gray";
   children: React.ReactNode;
-  footer?: React.ReactNode;
   droppableId?: string;
+  status: PostStatus;
+  onCreatePost: (status: PostStatus) => void;
 }
 
 const colorClasses = {
@@ -44,22 +48,33 @@ export function KanbanColumn({
   count,
   color,
   children,
-  footer,
   droppableId,
+  status,
+  onCreatePost,
 }: KanbanColumnProps) {
   const content = (
     <>
       {/* Header */}
       <div className="flex items-center justify-between border-b px-4 py-3">
         <h3 className="font-semibold text-sm">{title}</h3>
-        <span
-          className={cn(
-            "rounded-full px-2 py-0.5 text-xs font-medium",
-            badgeClasses[color]
-          )}
-        >
-          {count}
-        </span>
+        <div className="flex items-center gap-2">
+          <span
+            className={cn(
+              "rounded-full px-2 py-0.5 text-xs font-medium",
+              badgeClasses[color]
+            )}
+          >
+            {count}
+          </span>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-6 w-6 text-muted-foreground hover:text-foreground"
+            onClick={() => onCreatePost(status)}
+          >
+            <Plus className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
 
       {/* Cards */}
@@ -76,19 +91,28 @@ export function KanbanColumn({
             >
               {children}
               {provided.placeholder}
+              {/* Full-width add button */}
+              <button
+                onClick={() => onCreatePost(status)}
+                className="w-full rounded-lg border-2 border-dashed border-muted-foreground/25 py-3 text-sm text-muted-foreground hover:border-muted-foreground/50 hover:text-foreground transition-colors flex items-center justify-center gap-2"
+              >
+                <Plus className="h-4 w-4" />
+                Add
+              </button>
             </div>
           )}
         </Droppable>
       ) : (
         <div className="flex-1 space-y-3 overflow-y-auto p-3">
           {children}
-        </div>
-      )}
-
-      {/* Footer */}
-      {footer && (
-        <div className="border-t p-2">
-          {footer}
+          {/* Full-width add button */}
+          <button
+            onClick={() => onCreatePost(status)}
+            className="w-full rounded-lg border-2 border-dashed border-muted-foreground/25 py-3 text-sm text-muted-foreground hover:border-muted-foreground/50 hover:text-foreground transition-colors flex items-center justify-center gap-2"
+          >
+            <Plus className="h-4 w-4" />
+            Add
+          </button>
         </div>
       )}
     </>

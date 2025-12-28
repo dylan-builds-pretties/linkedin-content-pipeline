@@ -1,0 +1,17 @@
+{
+  "id": "mock-carousel-1",
+  "name": "5 Tips for Productivity",
+  "description": "LinkedIn carousel with productivity tips",
+  "type": "carousel",
+  "mimeType": "application/pdf",
+  "fileName": "productivity-tips.pdf",
+  "filePath": "https://picsum.photos/seed/carousel/800/1000",
+  "fileSize": 1250000,
+  "dimensions": {
+    "width": 800,
+    "height": 1000
+  },
+  "tags": ["carousel", "tips", "productivity"],
+  "createdAt": "2025-12-24T16:00:00.000Z",
+  "updatedAt": "2025-12-24T16:00:00.000Z"
+}
