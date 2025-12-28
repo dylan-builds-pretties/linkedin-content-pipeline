@@ -1,0 +1,20 @@
+id: example-theme
+created: 2024-12-27T11:00:00Z
+modified: 2024-12-27T11:00:00Z
+author: claude
+type: theme
+
+title: Authenticity in Leadership
+
+themes: |
+  Vulnerability and transparency create stronger connections than polished perfection.
+
+  Sharing failures gets more engagement than sharing wins. Building in public works because it's relatable. People connect with the messy, real journey—not the curated highlight reel.
+
+source_braindumps:
+  - example-braindump
+
+tags:
+  - authenticity
+  - leadership
+  - vulnerability

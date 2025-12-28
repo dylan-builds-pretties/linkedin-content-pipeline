@@ -1,0 +1,42 @@
+id: example-draft
+created: 2024-12-27T11:30:00Z
+modified: 2024-12-27T14:00:00Z
+author: claude
+reviewed_by: null
+type: draft
+
+platform: linkedin
+source_theme: example-theme
+version: 1
+character_count: 542
+
+tags:
+  - failure
+  - authenticity
+  - lessons-learned
+
+notes: |
+  Consider shortening the middle section.
+  Add specific numbers if possible.
+
+content: |
+  Last month, we launched a feature nobody wanted.
+
+  We spent 6 weeks building it. The team was excited.
+  We wrote the perfect announcement post.
+
+  12 likes. 2 comments (one was my mom).
+
+  Here's what I learned:
+
+  We built what WE thought was cool instead of what our users actually needed.
+
+  The irony? When I posted about the failure - raw, unfiltered,
+  embarrassed - it got 10x the engagement.
+
+  People don't connect with your wins.
+  They connect with your humanity.
+
+  Now we do customer calls before writing a single line of code.
+
+  What's a "failure" that taught you more than any success?

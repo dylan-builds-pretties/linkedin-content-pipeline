@@ -1,0 +1,17 @@
+{
+  "id": "example-scheduled",
+  "created": "2024-12-27T11:30:00Z",
+  "modified": "2024-12-28T09:00:00Z",
+  "author": "claude",
+  "reviewed_by": "lauren",
+  "approved_at": "2024-12-28T09:00:00Z",
+  "type": "scheduled",
+  "platform": "linkedin",
+  "scheduled_date": "2025-01-15T09:00:00Z",
+  "timezone": "America/New_York",
+  "source_draft": "example-draft",
+  "content": "Last month, we launched a feature nobody wanted.\n\nWe spent 6 weeks building it. The team was excited. We wrote the perfect announcement post.\n\n12 likes. 2 comments (one was my mom).\n\nHere's what I learned:\n\nWe built what WE thought was cool instead of what our users actually needed.\n\nThe irony? When I posted about the failure - raw, unfiltered, embarrassed - it got 10x the engagement.\n\nPeople don't connect with your wins.\nThey connect with your humanity.\n\nNow we do customer calls before writing a single line of code.\n\nWhat's a \"failure\" that taught you more than any success?",
+  "status": "pending",
+  "character_count": 542,
+  "tags": ["failure", "authenticity", "lessons-learned"]
+}
