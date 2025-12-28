@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { LinkedInPostCard } from "./linkedin-post-card";
-import { FeedFilters, type FilterType } from "./feed-filters";
-import type { Post, PostStatus } from "@/lib/types";
+import type { Post } from "@/lib/types";
 
 interface FeedViewProps {
   posts: Post[];
@@ -69,26 +67,11 @@ function groupPostsByDate(posts: Post[]): Map<string, Post[]> {
 }
 
 export function FeedView({ posts }: FeedViewProps) {
-  const [activeFilters, setActiveFilters] = useState<FilterType[]>([
-    "draft",
-    "ready_for_review",
-    "scheduled",
-    "published",
-  ]);
-
-  // Filter posts based on active filters
-  const filteredPosts = posts.filter((post) => activeFilters.includes(post.status));
-
-  const groupedPosts = groupPostsByDate(filteredPosts);
+  const groupedPosts = groupPostsByDate(posts);
 
   return (
     <div className="max-w-2xl mx-auto space-y-6 pb-8">
-      {/* Filters */}
-      <div className="sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-20 py-3">
-        <FeedFilters activeFilters={activeFilters} onFilterChange={setActiveFilters} />
-      </div>
-
-      {filteredPosts.length === 0 ? (
+      {posts.length === 0 ? (
         <div className="py-12 text-center text-muted-foreground">
           <p>No posts match your filters.</p>
         </div>
@@ -96,7 +79,7 @@ export function FeedView({ posts }: FeedViewProps) {
         Array.from(groupedPosts.entries()).map(([dateKey, datePosts]) => (
           <div key={dateKey}>
             {/* Date Header */}
-            <div className="sticky top-14 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-10 py-2 mb-3">
+            <div className="sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-10 py-2 mb-3">
               <h2 className="text-sm font-semibold text-muted-foreground">{dateKey}</h2>
             </div>
 
