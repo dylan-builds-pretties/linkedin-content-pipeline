@@ -21,8 +21,8 @@ import {
 } from "@/components/ui/select";
 
 interface ScheduleDialogProps {
-  draftId: string;
-  draftTitle: string;
+  postId: string;
+  postTitle: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onScheduled: () => void;
@@ -38,8 +38,8 @@ const TIMEZONES = [
 ];
 
 export function ScheduleDialog({
-  draftId,
-  draftTitle,
+  postId,
+  postTitle,
   open,
   onOpenChange,
   onScheduled,
@@ -61,12 +61,13 @@ export function ScheduleDialog({
 
     setLoading(true);
     try {
-      const response = await fetch(`/api/drafts/${draftId}/schedule`, {
-        method: "POST",
+      const response = await fetch(`/api/posts/${postId}`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          status: "scheduled",
           scheduledDate: formData.date,
           scheduledTime: formData.time,
           timezone: formData.timezone,
@@ -86,7 +87,7 @@ export function ScheduleDialog({
         });
       }
     } catch (error) {
-      console.error("Failed to schedule draft:", error);
+      console.error("Failed to schedule post:", error);
     } finally {
       setLoading(false);
     }
@@ -98,7 +99,7 @@ export function ScheduleDialog({
         <DialogHeader>
           <DialogTitle>Schedule Post</DialogTitle>
           <DialogDescription>
-            Schedule "{draftTitle}" for publishing on LinkedIn.
+            Schedule "{postTitle}" for publishing on LinkedIn.
           </DialogDescription>
         </DialogHeader>
 

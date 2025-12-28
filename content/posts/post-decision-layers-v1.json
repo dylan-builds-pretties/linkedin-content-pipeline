@@ -1,0 +1,12 @@
+{
+  "id": "post-decision-layers-v1",
+  "sourceIdea": "mjp8rttc-5095tl",
+  "title": "Where Humans Still Win (And Where They Shouldn't Be)",
+  "content": "Not every decision deserves a human.\n\nAnd not every decision deserves AI.\n\nHere's the framework fast teams are using:\n\n𝗟𝗮𝘆𝗲𝗿 𝟭: 𝗖𝗼𝗱𝗲\nRules. Thresholds. Filters. Math.\n\nIf two people should always reach the same answer, automate it.\n\n𝗟𝗮𝘆𝗲𝗿 𝟮: 𝗔𝗜\nPattern recognition. Classification. Ambiguous inputs.\n\nFast and flexible—but not perfectly reliable. Needs guardrails.\n\n𝗟𝗮𝘆𝗲𝗿 𝟯: 𝗛𝘂𝗺𝗮𝗻𝘀\nCapital allocation. Risk. Strategy. Gray areas.\n\nHumans should decide what matters, not process what doesn't.\n\nThe goal isn't fewer humans.\n\nIt's humans operating at the right altitude.\n\nWhen you place a human where code should be, you waste talent.\n\nWhen you place AI where humans should be, you create risk.\n\nWhen you get the placement right, your team moves faster while feeling calmer.\n\nWhich layer is taking up most of your team's time right now?",
+  "version": 1,
+  "characterCount": 1018,
+  "author": "Dylan Goren",
+  "status": "draft",
+  "createdAt": "2025-12-27T12:00:00.000Z",
+  "updatedAt": "2025-12-27T12:00:00.000Z"
+}

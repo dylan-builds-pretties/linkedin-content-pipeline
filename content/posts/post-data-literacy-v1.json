@@ -1,0 +1,12 @@
+{
+  "id": "post-data-literacy-v1",
+  "sourceIdea": "mjp8rttc-5095tl",
+  "title": "Why Your Excel Isn't a System",
+  "content": "Your team has data everywhere.\n\nExcel files. PDFs. Emails. Screenshots.\n\nBut none of it talks to each other.\n\nHere's what nobody tells non-technical operators:\n\nThe format of your data determines what you can do with it.\n\n→ Excel/CSV: Structured, but brittle. Easy to break.\n→ PDFs: Human-readable, machine-hostile.\n→ Images: Rich information, expensive to extract.\n→ Text: Flexible, but ambiguous.\n\nWhen you understand this, you stop asking \"Can we automate this?\"\n\nAnd start asking \"Is our data in a shape that allows automation?\"\n\nThe fastest teams aren't the ones with the best tools.\n\nThey're the ones who understand what kind of system they're actually running.\n\nThey know where data flows.\nWhere it breaks.\nWhere humans need to step in.\n\nThis isn't about becoming an engineer.\n\nIt's about developing intuition for how your operation actually works.\n\nWhat's one data format that's slowing your team down?",
+  "version": 1,
+  "characterCount": 1056,
+  "author": "Dylan Goren",
+  "status": "draft",
+  "createdAt": "2025-12-27T12:00:00.000Z",
+  "updatedAt": "2025-12-27T12:00:00.000Z"
+}

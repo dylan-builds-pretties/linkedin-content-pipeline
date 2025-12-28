@@ -7,32 +7,27 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import type { Draft, ScheduledPost, PublishedPost } from "@/lib/types";
-
-export type FeedPost =
-  | (Draft & { _type: "draft" })
-  | (ScheduledPost & { _type: "scheduled" })
-  | (PublishedPost & { _type: "published" });
+import type { Post } from "@/lib/types";
 
 interface LinkedInPostCardProps {
-  post: FeedPost;
+  post: Post;
 }
 
 const MAX_CHARS = 1300;
 const AUTHOR_NAME = "Dylan Goren";
 const PROFILE_IMAGE = "/profile.jpeg";
 
-function getStatusBadge(post: FeedPost) {
-  if (post._type === "draft") {
-    if (post.status === "ready_for_review") {
+function getStatusBadge(post: Post) {
+  switch (post.status) {
+    case "ready_for_review":
       return { label: "Ready for Review", className: "bg-blue-100 text-blue-800 border-blue-200" };
-    }
-    return { label: "Draft", className: "bg-yellow-100 text-yellow-800 border-yellow-200" };
+    case "scheduled":
+      return { label: "Scheduled", className: "bg-orange-100 text-orange-800 border-orange-200" };
+    case "published":
+      return { label: "Published", className: "bg-green-100 text-green-800 border-green-200" };
+    default:
+      return { label: "Draft", className: "bg-yellow-100 text-yellow-800 border-yellow-200" };
   }
-  if (post._type === "scheduled") {
-    return { label: "Scheduled", className: "bg-orange-100 text-orange-800 border-orange-200" };
-  }
-  return { label: "Published", className: "bg-green-100 text-green-800 border-green-200" };
 }
 
 function formatTime(dateString: string): string {
@@ -50,15 +45,11 @@ export function LinkedInPostCard({ post }: LinkedInPostCardProps) {
   const statusBadge = getStatusBadge(post);
 
   const handleSave = async () => {
-    if (post._type === "published") return; // Can't edit published posts
+    if (post.status === "published") return; // Can't edit published posts
 
     setIsSaving(true);
     try {
-      const endpoint = post._type === "draft"
-        ? `/api/drafts/${post.id}`
-        : `/api/scheduled/${post.id}`;
-
-      const res = await fetch(endpoint, {
+      const res = await fetch(`/api/posts/${post.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content }),
@@ -71,7 +62,7 @@ export function LinkedInPostCard({ post }: LinkedInPostCardProps) {
     }
   };
 
-  const canEdit = post._type !== "published";
+  const canEdit = post.status !== "published";
 
   return (
     <div className="bg-background border rounded-lg shadow-sm overflow-hidden">
@@ -142,7 +133,7 @@ export function LinkedInPostCard({ post }: LinkedInPostCardProps) {
       </div>
 
       {/* Metrics for published posts */}
-      {post._type === "published" && post.metrics && (
+      {post.status === "published" && post.metrics && (
         <div className="px-4 py-2 border-t flex items-center gap-4 text-sm text-muted-foreground">
           <span className="flex items-center gap-1">
             <ThumbsUp className="h-4 w-4" />
@@ -177,7 +168,7 @@ export function LinkedInPostCard({ post }: LinkedInPostCardProps) {
         </Button>
 
         <div className="flex items-center gap-1">
-          {post._type === "published" && post.linkedinUrl && (
+          {post.status === "published" && post.linkedinUrl && (
             <Button variant="ghost" size="sm" className="text-xs" asChild>
               <a href={post.linkedinUrl} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="h-3 w-3 mr-1" />

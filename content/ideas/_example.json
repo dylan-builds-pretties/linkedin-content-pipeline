@@ -1,0 +1,8 @@
+{
+  "id": "_example",
+  "title": "Example Idea",
+  "braindump": "This is an example braindump. Raw thoughts, voice notes, or stream of consciousness writing goes here.\n\nYou can write freely without worrying about structure - this is the capture phase.",
+  "notes": "## Refined Notes\n\nAfter braindumping, you can add structured notes here in Markdown.\n\n### Key Points\n- First insight\n- Second insight\n- Third insight\n\n### Potential Angles\n1. Article angle\n2. LinkedIn post angle\n3. Thread angle",
+  "createdAt": "2024-12-27T10:00:00.000Z",
+  "updatedAt": "2024-12-27T10:00:00.000Z"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "_example",
+  "sourceIdea": "example-idea-id",
+  "title": "Example LinkedIn Post",
+  "content": "Here's what nobody tells you about [topic]:\n\nThe conventional wisdom says X.\n\nBut after [experience], I learned that Y.\n\nHere's the shift that changed everything:\n\n1. First insight\n2. Second insight\n3. Third insight\n\nThe result? [Outcome]\n\nWhat's your experience with this? Let me know in the comments.",
+  "version": 1,
+  "characterCount": 350,
+  "author": "Dylan Goren",
+  "status": "draft",
+  "createdAt": "2024-12-27T11:00:00.000Z",
+  "updatedAt": "2024-12-27T11:00:00.000Z"
+}

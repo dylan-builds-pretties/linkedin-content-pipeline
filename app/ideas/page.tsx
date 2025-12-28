@@ -1,6 +1,8 @@
 import { IdeasGallery } from "@/components/ideas/ideas-gallery";
 import type { Idea } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
+
 async function getIdeas() {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";

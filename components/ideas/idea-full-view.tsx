@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { ArrowRight, ExternalLink, Save, X } from "lucide-react";
+import { ArrowRight, Save, X } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -62,20 +62,12 @@ export function IdeaFullView({
             <DialogTitle className="text-xl font-semibold">
               View Idea
             </DialogTitle>
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" asChild>
-                <Link href={`/ideas/${idea.id}`}>
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  Full Edit Page
-                </Link>
-              </Button>
-              <Button variant="default" size="sm" asChild>
-                <Link href={`/drafts/new?idea=${idea.id}`}>
-                  <ArrowRight className="h-4 w-4 mr-2" />
-                  Create Draft
-                </Link>
-              </Button>
-            </div>
+            <Button variant="default" size="sm" asChild>
+              <Link href={`/drafts/new?idea=${idea.id}`}>
+                <ArrowRight className="h-4 w-4 mr-2" />
+                Create Draft
+              </Link>
+            </Button>
           </div>
         </DialogHeader>
 

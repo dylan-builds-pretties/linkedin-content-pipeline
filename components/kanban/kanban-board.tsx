@@ -3,60 +3,51 @@
 import { useState } from "react";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import { KanbanColumn } from "./kanban-column";
-import { DraftCard } from "./draft-card";
-import { ScheduledCard } from "./scheduled-card";
+import { PostCard } from "./post-card";
 import { ScheduleDialog } from "@/components/content/schedule-dialog";
 import { Button } from "@/components/ui/button";
 import { Plus, Archive } from "lucide-react";
 import Link from "next/link";
-import type { Draft, ScheduledPost } from "@/lib/types";
+import type { Post, PostStatus } from "@/lib/types";
 
 interface KanbanBoardProps {
-  initialDrafts?: Draft[];
-  initialScheduled?: ScheduledPost[];
-  publishedCount?: number;
+  initialPosts?: Post[];
 }
 
-export function KanbanBoard({
-  initialDrafts = [],
-  initialScheduled = [],
-  publishedCount: initialPublishedCount = 0,
-}: KanbanBoardProps) {
-  const [drafts, setDrafts] = useState<Draft[]>(initialDrafts);
-  const [scheduled, setScheduled] = useState<ScheduledPost[]>(initialScheduled);
-  const [publishedCount, setPublishedCount] = useState(initialPublishedCount);
+export function KanbanBoard({ initialPosts = [] }: KanbanBoardProps) {
+  const [posts, setPosts] = useState<Post[]>(initialPosts);
 
   // Schedule dialog state
   const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
-  const [draftToSchedule, setDraftToSchedule] = useState<Draft | null>(null);
+  const [postToSchedule, setPostToSchedule] = useState<Post | null>(null);
 
-  // Split drafts by status
-  const draftItems = drafts.filter((d) => d.status === "draft");
-  const readyForReview = drafts.filter((d) => d.status === "ready_for_review");
+  // Filter posts by status
+  const draftItems = posts.filter((p) => p.status === "draft");
+  const readyForReview = posts.filter((p) => p.status === "ready_for_review");
+  const scheduled = posts.filter((p) => p.status === "scheduled");
+  const published = posts.filter((p) => p.status === "published");
 
   const handleScheduled = () => {
-    if (draftToSchedule) {
-      // Remove the draft from drafts list
-      setDrafts((prev) => prev.filter((d) => d.id !== draftToSchedule.id));
-      // Refresh scheduled posts
-      fetch("/api/scheduled")
+    if (postToSchedule) {
+      // Refresh posts from server
+      fetch("/api/posts")
         .then((res) => res.json())
-        .then((data) => setScheduled(data))
+        .then((data) => setPosts(data))
         .catch(console.error);
     }
-    setDraftToSchedule(null);
+    setPostToSchedule(null);
   };
 
-  const handlePublishScheduled = async (postId: string) => {
+  const handlePublish = async (postId: string) => {
     try {
-      const res = await fetch(`/api/scheduled/${postId}/publish`, {
-        method: "POST",
+      const res = await fetch(`/api/posts/${postId}`, {
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({}),
+        body: JSON.stringify({ status: "published" }),
       });
       if (res.ok) {
-        setScheduled((prev) => prev.filter((p) => p.id !== postId));
-        setPublishedCount((prev) => prev + 1);
+        const updated = await res.json();
+        setPosts((prev) => prev.map((p) => (p.id === postId ? updated : p)));
       }
     } catch (error) {
       console.error("Failed to publish:", error);
@@ -74,63 +65,64 @@ export function KanbanBoard({
       return;
     }
 
-    // Handle draft moves between Drafts and Ready for Review
-    if (
-      (source.droppableId === "drafts" || source.droppableId === "ready_for_review") &&
-      (destination.droppableId === "drafts" || destination.droppableId === "ready_for_review")
-    ) {
-      const newStatus = destination.droppableId === "drafts" ? "draft" : "ready_for_review";
+    // Map droppable IDs to status values
+    const statusMap: Record<string, PostStatus> = {
+      drafts: "draft",
+      ready_for_review: "ready_for_review",
+      scheduled: "scheduled",
+      published: "published",
+    };
 
+    const sourceStatus = statusMap[source.droppableId];
+    const destStatus = statusMap[destination.droppableId];
+
+    // Handle moves between Drafts and Ready for Review
+    if (
+      (sourceStatus === "draft" || sourceStatus === "ready_for_review") &&
+      (destStatus === "draft" || destStatus === "ready_for_review")
+    ) {
       // Optimistically update UI
-      setDrafts((prev) =>
-        prev.map((d) =>
-          d.id === draggableId ? { ...d, status: newStatus as "draft" | "ready_for_review" } : d
-        )
+      setPosts((prev) =>
+        prev.map((p) => (p.id === draggableId ? { ...p, status: destStatus } : p))
       );
 
       // Persist to server
       try {
-        const res = await fetch(`/api/drafts/${draggableId}`, {
+        const res = await fetch(`/api/posts/${draggableId}`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ status: newStatus }),
+          body: JSON.stringify({ status: destStatus }),
         });
         if (!res.ok) {
           // Revert on failure
-          const oldStatus = source.droppableId === "drafts" ? "draft" : "ready_for_review";
-          setDrafts((prev) =>
-            prev.map((d) =>
-              d.id === draggableId ? { ...d, status: oldStatus as "draft" | "ready_for_review" } : d
-            )
+          setPosts((prev) =>
+            prev.map((p) => (p.id === draggableId ? { ...p, status: sourceStatus } : p))
           );
         }
       } catch (error) {
-        console.error("Failed to update draft status:", error);
+        console.error("Failed to update post status:", error);
         // Revert on error
-        const oldStatus = source.droppableId === "drafts" ? "draft" : "ready_for_review";
-        setDrafts((prev) =>
-          prev.map((d) =>
-            d.id === draggableId ? { ...d, status: oldStatus as "draft" | "ready_for_review" } : d
-          )
+        setPosts((prev) =>
+          prev.map((p) => (p.id === draggableId ? { ...p, status: sourceStatus } : p))
         );
       }
     }
 
-    // Handle draft move to Scheduled (open schedule dialog)
+    // Handle move to Scheduled (open schedule dialog)
     if (
-      (source.droppableId === "drafts" || source.droppableId === "ready_for_review") &&
-      destination.droppableId === "scheduled"
+      (sourceStatus === "draft" || sourceStatus === "ready_for_review") &&
+      destStatus === "scheduled"
     ) {
-      const draft = drafts.find((d) => d.id === draggableId);
-      if (draft) {
-        setDraftToSchedule(draft);
+      const post = posts.find((p) => p.id === draggableId);
+      if (post) {
+        setPostToSchedule(post);
         setScheduleDialogOpen(true);
       }
     }
 
-    // Handle scheduled post move to Published
-    if (source.droppableId === "scheduled" && destination.droppableId === "published") {
-      await handlePublishScheduled(draggableId);
+    // Handle move to Published
+    if (sourceStatus === "scheduled" && destStatus === "published") {
+      await handlePublish(draggableId);
     }
   };
 
@@ -146,15 +138,15 @@ export function KanbanBoard({
             droppableId="drafts"
             footer={
               <Button variant="ghost" size="sm" className="w-full justify-start text-muted-foreground" asChild>
-                <Link href="/drafts/new">
+                <Link href="/posts/new">
                   <Plus className="mr-2 h-4 w-4" />
                   New Draft
                 </Link>
               </Button>
             }
           >
-            {draftItems.map((draft, index) => (
-              <Draggable key={draft.id} draggableId={draft.id} index={index}>
+            {draftItems.map((post, index) => (
+              <Draggable key={post.id} draggableId={post.id} index={index}>
                 {(provided, snapshot) => (
                   <div
                     ref={provided.innerRef}
@@ -162,7 +154,7 @@ export function KanbanBoard({
                     {...provided.dragHandleProps}
                     className={snapshot.isDragging ? "opacity-90" : ""}
                   >
-                    <DraftCard draft={draft} />
+                    <PostCard post={post} />
                   </div>
                 )}
               </Draggable>
@@ -177,15 +169,15 @@ export function KanbanBoard({
             droppableId="ready_for_review"
             footer={
               <Button variant="ghost" size="sm" className="w-full justify-start text-muted-foreground" asChild>
-                <Link href="/drafts/new?status=ready_for_review">
+                <Link href="/posts/new?status=ready_for_review">
                   <Plus className="mr-2 h-4 w-4" />
                   New Draft
                 </Link>
               </Button>
             }
           >
-            {readyForReview.map((draft, index) => (
-              <Draggable key={draft.id} draggableId={draft.id} index={index}>
+            {readyForReview.map((post, index) => (
+              <Draggable key={post.id} draggableId={post.id} index={index}>
                 {(provided, snapshot) => (
                   <div
                     ref={provided.innerRef}
@@ -193,7 +185,7 @@ export function KanbanBoard({
                     {...provided.dragHandleProps}
                     className={snapshot.isDragging ? "opacity-90" : ""}
                   >
-                    <DraftCard draft={draft} showScheduleButton />
+                    <PostCard post={post} showScheduleButton />
                   </div>
                 )}
               </Draggable>
@@ -216,7 +208,7 @@ export function KanbanBoard({
                     {...provided.dragHandleProps}
                     className={snapshot.isDragging ? "opacity-90" : ""}
                   >
-                    <ScheduledCard post={post} />
+                    <PostCard post={post} showScheduleInfo />
                   </div>
                 )}
               </Draggable>
@@ -226,27 +218,41 @@ export function KanbanBoard({
           {/* Published Column */}
           <KanbanColumn
             title="Published"
-            count={publishedCount}
+            count={published.length}
             color="green"
             droppableId="published"
           >
-            <div className="flex flex-col items-center justify-center py-8 text-center text-muted-foreground">
-              <Archive className="mb-2 h-8 w-8" />
-              <p className="text-sm">{publishedCount} posts published</p>
-              <p className="text-xs mt-1">Drag scheduled posts here to publish</p>
-              <Button variant="link" size="sm" asChild className="mt-2">
-                <Link href="/published">View Archive</Link>
-              </Button>
-            </div>
+            {published.length > 0 ? (
+              published.map((post, index) => (
+                <Draggable key={post.id} draggableId={post.id} index={index}>
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      className={snapshot.isDragging ? "opacity-90" : ""}
+                    >
+                      <PostCard post={post} showMetrics />
+                    </div>
+                  )}
+                </Draggable>
+              ))
+            ) : (
+              <div className="flex flex-col items-center justify-center py-8 text-center text-muted-foreground">
+                <Archive className="mb-2 h-8 w-8" />
+                <p className="text-sm">No published posts yet</p>
+                <p className="text-xs mt-1">Drag scheduled posts here to publish</p>
+              </div>
+            )}
           </KanbanColumn>
         </div>
       </DragDropContext>
 
       {/* Schedule Dialog */}
-      {draftToSchedule && (
+      {postToSchedule && (
         <ScheduleDialog
-          draftId={draftToSchedule.id}
-          draftTitle={draftToSchedule.title || "Untitled Draft"}
+          postId={postToSchedule.id}
+          postTitle={postToSchedule.title || "Untitled Post"}
           open={scheduleDialogOpen}
           onOpenChange={setScheduleDialogOpen}
           onScheduled={handleScheduled}

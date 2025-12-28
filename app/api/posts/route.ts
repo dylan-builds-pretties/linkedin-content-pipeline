@@ -1,35 +1,43 @@
 import { NextResponse } from "next/server";
-import { readAllFromStage, writeOne, generateId, getCurrentTimestamp } from "@/lib/storage";
-import { CreateDraftSchema, DraftSchema } from "@/lib/schemas";
-import type { Draft } from "@/lib/types";
+import { readAllFromStage, readPostsByStatus, writeOne, generateId, getCurrentTimestamp } from "@/lib/storage";
+import { CreatePostSchema, PostSchema } from "@/lib/schemas";
+import type { Post, PostStatus } from "@/lib/types";
 
-// GET all drafts
-export async function GET() {
+// GET all posts (with optional status filter)
+export async function GET(request: Request) {
   try {
-    const drafts = await readAllFromStage<Draft>("drafts");
+    const { searchParams } = new URL(request.url);
+    const status = searchParams.get("status") as PostStatus | null;
+
+    let posts: Post[];
+    if (status) {
+      posts = await readPostsByStatus(status);
+    } else {
+      posts = await readAllFromStage<Post>("posts");
+    }
 
     // Sort by createdAt descending (newest first)
-    drafts.sort((a, b) =>
+    posts.sort((a, b) =>
       new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
 
-    return NextResponse.json(drafts);
+    return NextResponse.json(posts);
   } catch (error) {
-    console.error("Error fetching drafts:", error);
+    console.error("Error fetching posts:", error);
     return NextResponse.json(
-      { error: "Failed to fetch drafts" },
+      { error: "Failed to fetch posts" },
       { status: 500 }
     );
   }
 }
 
-// POST new draft
+// POST new post
 export async function POST(request: Request) {
   try {
     const body = await request.json();
 
     // Validate input
-    const validationResult = CreateDraftSchema.safeParse(body);
+    const validationResult = CreatePostSchema.safeParse(body);
     if (!validationResult.success) {
       return NextResponse.json(
         { error: "Validation failed", details: validationResult.error.issues },
@@ -41,12 +49,11 @@ export async function POST(request: Request) {
     const now = getCurrentTimestamp();
     const id = generateId();
 
-    // Create the full draft object
-    const draft: Draft = {
+    // Create the full post object
+    const post: Post = {
       id,
       title: input.title,
       content: input.content,
-      notes: input.notes,
       sourceIdea: input.sourceIdea,
       version: input.version,
       characterCount: input.content.length,
@@ -57,7 +64,7 @@ export async function POST(request: Request) {
     };
 
     // Validate the full object
-    const fullValidation = DraftSchema.safeParse(draft);
+    const fullValidation = PostSchema.safeParse(post);
     if (!fullValidation.success) {
       return NextResponse.json(
         { error: "Data validation failed", details: fullValidation.error.issues },
@@ -66,19 +73,19 @@ export async function POST(request: Request) {
     }
 
     // Write to file
-    const success = await writeOne("drafts", id, draft);
+    const success = await writeOne("posts", id, post);
     if (!success) {
       return NextResponse.json(
-        { error: "Failed to save draft" },
+        { error: "Failed to save post" },
         { status: 500 }
       );
     }
 
-    return NextResponse.json(draft, { status: 201 });
+    return NextResponse.json(post, { status: 201 });
   } catch (error) {
-    console.error("Error creating draft:", error);
+    console.error("Error creating post:", error);
     return NextResponse.json(
-      { error: "Failed to create draft" },
+      { error: "Failed to create post" },
       { status: 500 }
     );
   }

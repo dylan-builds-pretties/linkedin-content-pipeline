@@ -6,19 +6,13 @@ import { ViewToggle, FeedView } from "@/components/feed";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
-import type { Draft, ScheduledPost, PublishedPost } from "@/lib/types";
+import type { Post } from "@/lib/types";
 
 interface DashboardContentProps {
-  drafts: Draft[];
-  scheduled: ScheduledPost[];
-  published: PublishedPost[];
+  posts: Post[];
 }
 
-export function DashboardContent({
-  drafts,
-  scheduled,
-  published,
-}: DashboardContentProps) {
+export function DashboardContent({ posts }: DashboardContentProps) {
   const [view, setView] = useState<"kanban" | "feed">("kanban");
 
   // Persist view preference
@@ -40,7 +34,7 @@ export function DashboardContent({
       <div className="mb-4 flex items-center justify-end gap-4">
         <ViewToggle view={view} onViewChange={handleViewChange} />
         <Button asChild>
-          <Link href="/drafts/new">
+          <Link href="/posts/new">
             <Plus className="mr-2 h-4 w-4" />
             New Post
           </Link>
@@ -49,17 +43,9 @@ export function DashboardContent({
 
       {/* Content */}
       {view === "kanban" ? (
-        <KanbanBoard
-          initialDrafts={drafts}
-          initialScheduled={scheduled}
-          publishedCount={published.length}
-        />
+        <KanbanBoard initialPosts={posts} />
       ) : (
-        <FeedView
-          drafts={drafts}
-          scheduled={scheduled}
-          published={published}
-        />
+        <FeedView posts={posts} />
       )}
     </div>
   );

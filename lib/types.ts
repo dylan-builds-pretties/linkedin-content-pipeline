@@ -1,10 +1,8 @@
-export type Stage =
-  | "ideas"
-  | "drafts"
-  | "scheduled"
-  | "published";
+// Simplified stage type - only two folders now
+export type Stage = "ideas" | "posts";
 
-export type DraftStatus = "draft" | "ready_for_review";
+// Post status replaces the old stage-based workflow
+export type PostStatus = "draft" | "ready_for_review" | "scheduled" | "published";
 
 export interface Idea {
   id: string;
@@ -15,39 +13,25 @@ export interface Idea {
   updatedAt: string;
 }
 
-export interface Draft {
+// Unified Post type - combines Draft, ScheduledPost, and PublishedPost
+export interface Post {
   id: string;
+  sourceIdea: string;
   title?: string;
   content: string;
-  notes: string;
-  sourceIdea: string;
   version: number;
   characterCount: number;
   author: string;
-  status: DraftStatus;
-  createdAt: string;
-  updatedAt: string;
-}
+  status: PostStatus;
 
-export interface ScheduledPost {
-  id: string;
-  draftId: string;
-  title?: string;
-  content: string;
-  scheduledDate: string;
-  scheduledTime: string;
-  timezone: string;
-  reviewedBy: string;
-  status: "pending" | "approved" | "rejected";
-  createdAt: string;
-  updatedAt: string;
-}
+  // Scheduling fields (used when status is "scheduled" or later)
+  scheduledDate?: string;
+  scheduledTime?: string;
+  timezone?: string;
+  reviewedBy?: string;
 
-export interface PublishedPost {
-  id: string;
-  title?: string;
-  content: string;
-  publishedAt: string;
+  // Publishing fields (used when status is "published")
+  publishedAt?: string;
   linkedinUrl?: string;
   metrics?: {
     likes: number;
@@ -55,14 +39,12 @@ export interface PublishedPost {
     shares: number;
     impressions: number;
   };
+
   createdAt: string;
+  updatedAt: string;
 }
 
-export type ContentItem =
-  | Idea
-  | Draft
-  | ScheduledPost
-  | PublishedPost;
+export type ContentItem = Idea | Post;
 
 export interface PipelineStats {
   ideas: number;

@@ -3,19 +3,19 @@ import { query } from "@anthropic-ai/claude-agent-sdk";
 
 export async function POST(request: Request) {
   try {
-    const { themeId } = await request.json();
+    const { ideaId } = await request.json();
 
-    if (!themeId) {
+    if (!ideaId) {
       return NextResponse.json(
-        { error: "themeId is required" },
+        { error: "ideaId is required" },
         { status: 400 }
       );
     }
 
     for await (const message of query({
-      prompt: `Read the theme file at content/02-themes/${themeId}.json.
+      prompt: `Read the idea file at content/ideas/${ideaId}.json.
 
-               Create 2-3 LinkedIn post draft files in content/03-drafts/ following these guidelines:
+               Create 2-3 LinkedIn post files in content/posts/ following these guidelines:
                - Under 1300 characters (LinkedIn limit for full display)
                - Short paragraphs (1-2 sentences max)
                - Strong hook that stops the scroll
@@ -23,19 +23,17 @@ export async function POST(request: Request) {
                - Conversational, not corporate
                - Include line breaks for readability
 
-               Name files: YYYY-MM-DD-topic-v1.json, v2.json, etc.
-               Use the existing draft format (see content/03-drafts/_example.json if it exists).
+               Use the Post schema format (see content/posts/_example.json if it exists).
 
-               Each draft should have:
-               - id: unique identifier
-               - title: descriptive title
+               Each post should have:
+               - id: unique identifier (use timestamp-random format like "abc123-xyz789")
+               - sourceIdea: "${ideaId}"
+               - title: descriptive title (optional)
                - content: the LinkedIn post content
-               - themeId: reference to the source theme
-               - version: draft version number
+               - version: 1
                - characterCount: length of content
-               - tags: relevant tags
                - author: "ai-generated"
-               - notes: any internal notes
+               - status: "draft"
                - createdAt/updatedAt: ISO timestamps`,
       options: {
         allowedTools: ["Read", "Write", "Glob"],
@@ -46,19 +44,19 @@ export async function POST(request: Request) {
         return NextResponse.json({
           success: true,
           cost: message.total_cost_usd,
-          themeId,
+          ideaId,
         });
       }
     }
 
     return NextResponse.json({
       success: true,
-      themeId,
+      ideaId,
     });
   } catch (error) {
-    console.error("Error generating drafts:", error);
+    console.error("Error generating posts:", error);
     return NextResponse.json(
-      { error: "Failed to generate drafts", details: String(error) },
+      { error: "Failed to generate posts", details: String(error) },
       { status: 500 }
     );
   }

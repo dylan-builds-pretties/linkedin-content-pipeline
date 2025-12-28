@@ -1,13 +1,11 @@
 import { promises as fs } from "fs";
 import path from "path";
-import type { Stage } from "./types";
+import type { Stage, Post, PostStatus, PipelineStats } from "./types";
 
-// Map stages to their folder paths
+// Map stages to their folder paths (simplified to just ideas and posts)
 const STAGE_PATHS: Record<Stage, string> = {
   ideas: "content/ideas",
-  drafts: "content/drafts",
-  scheduled: "content/scheduled",
-  published: "content/published",
+  posts: "content/posts",
 };
 
 // Get the absolute path for a stage
@@ -192,28 +190,29 @@ export async function countInStage(stage: Stage): Promise<number> {
 }
 
 /**
- * Get pipeline statistics for all stages
+ * Read all posts filtered by status
  */
-export async function getPipelineStats(): Promise<Record<Stage, number>> {
-  const stages: Stage[] = [
-    "ideas",
-    "drafts",
-    "scheduled",
-    "published",
-  ];
+export async function readPostsByStatus(status: PostStatus): Promise<Post[]> {
+  const posts = await readAllFromStage<Post>("posts");
+  return posts.filter((p) => p.status === status);
+}
 
-  const stats: Record<Stage, number> = {
-    ideas: 0,
-    drafts: 0,
-    scheduled: 0,
-    published: 0,
+/**
+ * Get pipeline statistics - counts ideas and posts by status
+ */
+export async function getPipelineStats(): Promise<PipelineStats> {
+  const [ideaCount, posts] = await Promise.all([
+    countInStage("ideas"),
+    readAllFromStage<Post>("posts"),
+  ]);
+
+  return {
+    ideas: ideaCount,
+    drafts: posts.filter((p) => p.status === "draft").length,
+    draftsReadyForReview: posts.filter((p) => p.status === "ready_for_review").length,
+    scheduled: posts.filter((p) => p.status === "scheduled").length,
+    published: posts.filter((p) => p.status === "published").length,
   };
-
-  for (const stage of stages) {
-    stats[stage] = await countInStage(stage);
-  }
-
-  return stats;
 }
 
 /**

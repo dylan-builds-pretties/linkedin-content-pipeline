@@ -1,0 +1,12 @@
+{
+  "id": "post-thesis-v1",
+  "sourceIdea": "mjp8rttc-5095tl",
+  "title": "AI Didn't Replace Judgment. It Exposed It.",
+  "content": "AI isn't changing real estate by thinking for us.\n\nIt's changing it by making logic cheap to implement.\n\nFor the first time, non-technical teams can translate their decision-making into executable systems using natural language.\n\nBut here's what that exposed:\n\nMost teams don't actually know how their decisions work.\n\nThey just know that experienced people make them.\n\nThe bottleneck is no longer \"Can we build this?\"\n\nIt's \"Do we understand our own logic well enough to encode it?\"\n\nThe teams winning right now are:\n\n→ Extracting judgment from individuals\n→ Structuring it into systems\n→ Deciding where automation ends and humans step in\n\nThe advantage won't belong to teams that \"use AI.\"\n\nIt'll belong to teams that understand their own operations well enough to know where AI fits.\n\nWhat's the one decision in your workflow that you couldn't explain to a system?",
+  "version": 1,
+  "characterCount": 987,
+  "author": "Dylan Goren",
+  "status": "draft",
+  "createdAt": "2025-12-27T12:00:00.000Z",
+  "updatedAt": "2025-12-27T12:00:00.000Z"
+}
