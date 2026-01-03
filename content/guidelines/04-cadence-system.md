@@ -36,40 +36,6 @@ Elite teams prioritize consistency of thinking, not frequency. This system ensur
 - **Framing the problem**
 - **Showing how Pillar thinks**
 
-### Daily Content Buckets (Rotate)
-
-You only need ~6 buckets to post forever:
-
-1. **Observation from the Field**
-   - "Watched a developer do X today…"
-   - "Saw this pattern again…"
-
-2. **Mental Models**
-   - Systems thinking
-   - Decision placement
-   - Human vs AI vs code
-
-3. **Data Reality Checks**
-   - "This is why PDFs break scale"
-   - "Why Excel feels fast but isn't"
-
-4. **Quiet Authority**
-   - "We mapped this"
-   - "We've seen this across X markets"
-
-5. **Contrarian Takes**
-   - "AI isn't the advantage"
-   - "Speed doesn't come from hustle"
-
-6. **Seasonal / Timely**
-   - Market shifts
-   - Industry news reframed
-   - Macro trends interpreted
-
-**Rule:** If someone only reads your daily posts, they should still understand what Pillar stands for.
-
----
-
 ## 2. Weekly Content (1× per week)
 
 **Format:** Medium-length LinkedIn post (300–600 words)
@@ -193,13 +159,5 @@ Daily → Weekly → Monthly → Quarterly → Annual
 **Everything compounds.**
 
 ---
-
-## Posting Cadence Summary
-
-For Pillar:
-- 3–5 posts per week
-- Mostly text
-- Occasional diagrams or screenshots
-- Rare "announcement" posts
 
 Think: **"Daily field notes from building the future of land acquisition."**

@@ -8,8 +8,7 @@ Top-tier software brands treat social media as a production system, not a postin
 2. [Content Pillars](./02-content-pillars.md) - Pillars + formats
 3. [Decision Rules](./03-decision-rules.md) - What to post, what not to
 4. [Cadence System](./04-cadence-system.md) - Time horizons + flywheel
-5. [Execution Engine](./05-execution-engine.md) - Docs, workflows, QA
-6. [Post Formats](./06-post-formats.md) - Format menu for content
+5. [Post Formats](./06-post-formats.md) - Format menu for content
 
 ---
 

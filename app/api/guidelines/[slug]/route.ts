@@ -7,7 +7,6 @@ const SLUG_TO_FILE: Record<string, string> = {
   "content-pillars": "02-content-pillars.md",
   "decision-rules": "03-decision-rules.md",
   "cadence-system": "04-cadence-system.md",
-  "execution-engine": "05-execution-engine.md",
   "post-formats": "06-post-formats.md",
 };
 

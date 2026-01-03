@@ -13,7 +13,6 @@ Before creating content, review the Social Media Operating System in `content/gu
 | [02-content-pillars.md](content/guidelines/02-content-pillars.md) | 5 content pillars with formats |
 | [03-decision-rules.md](content/guidelines/03-decision-rules.md) | 5-question content gate |
 | [04-cadence-system.md](content/guidelines/04-cadence-system.md) | Time horizons + flywheel |
-| [05-execution-engine.md](content/guidelines/05-execution-engine.md) | Workflows, checklists, pipeline |
 | [06-post-formats.md](content/guidelines/06-post-formats.md) | Format menu for content |
 
 **Key rule:** Every post must pass the 5-question content gate and align with at least one core worldview belief.

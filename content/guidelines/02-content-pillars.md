@@ -1,12 +1,14 @@
 # Content Pillars
 
-#### 1. Education
+#### 1. Demonstation
+Showcasing product features and development work in action.
+#### 2. Education
 Reusable frameworks and systems for how real estate work actually scales.
-#### 2. Observations
+#### 3. Observations
 Patterns noticed from data, behavior, and real operator workflows.
-#### 3. Behind-the-Scenes
+#### 4. Behind-the-Scenes
 Building Pillar in public: tradeoffs, failures, constraints, real decisions.
-#### 4. Memes
+#### 5. Memes
 Light, insider humor about real estate workflows, data pain, and broken tools.
 
 
@@ -16,6 +18,7 @@ Light, insider humor about real estate workflows, data pain, and broken tools.
 
 | Pillar | Core Belief | Allowed Formats | Hard No's |
 |--------|-------------|-----------------|-----------|
+| Demonstration | Show, don't tell | Feature demos, screen recordings, tutorials | Dry feature lists, sales pitches |
 | Education | Structure beats hustle | Frameworks, step-by-steps, before/after | Motivation quotes, generic advice |
 | Behind-the-Scenes | We build what we wish existed | Build logs, decision journals, post-mortems | Marketing speak, polished success stories |
 | Observations | Data ≠ insight | Data insights, behavioral patterns, "we noticed..." | Buzzwords, jargon without explanation |

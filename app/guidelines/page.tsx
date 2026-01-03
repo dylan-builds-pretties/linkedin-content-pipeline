@@ -11,7 +11,6 @@ const sections = [
   { id: "content-pillars", title: "Content Pillars", file: "02-content-pillars.md" },
   { id: "decision-rules", title: "Decision Rules", file: "03-decision-rules.md" },
   { id: "cadence-system", title: "Cadence System", file: "04-cadence-system.md" },
-  { id: "execution-engine", title: "Execution Engine", file: "05-execution-engine.md" },
   { id: "post-formats", title: "Post Formats", file: "06-post-formats.md" },
 ];
 
