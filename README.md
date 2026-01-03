@@ -1,3 +1,4 @@
+Hi
 # Social Media Content Workflow
 
 A file-based system for collaborative LinkedIn content creation. JSON files for easy scripting and scheduler integration.
