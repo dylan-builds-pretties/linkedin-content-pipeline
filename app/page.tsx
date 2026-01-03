@@ -1,13 +1,16 @@
 import { DashboardContent } from "@/components/dashboard-content";
+import { readAllFromStage } from "@/lib/storage";
 import type { Post } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
 async function getData() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-    const res = await fetch(`${baseUrl}/api/posts`, { cache: "no-store" });
-    const posts: Post[] = res.ok ? await res.json() : [];
+    const posts = await readAllFromStage<Post>("posts");
+    // Sort by createdAt descending (newest first)
+    posts.sort((a, b) =>
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
     return { posts };
   } catch (error) {
     console.error("Failed to fetch data:", error);

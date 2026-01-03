@@ -1,13 +1,16 @@
 import { IdeasGallery } from "@/components/ideas/ideas-gallery";
+import { readAllFromStage } from "@/lib/storage";
 import type { Idea } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
 async function getIdeas() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-    const res = await fetch(`${baseUrl}/api/ideas`, { cache: "no-store" });
-    const ideas: Idea[] = res.ok ? await res.json() : [];
+    const ideas = await readAllFromStage<Idea>("ideas");
+    // Sort by createdAt descending (newest first)
+    ideas.sort((a, b) =>
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
     return ideas;
   } catch (error) {
     console.error("Failed to fetch ideas:", error);

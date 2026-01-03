@@ -1,13 +1,16 @@
 import { ContentGallery } from "@/components/content-generator/content-gallery";
+import { readAllFromStage } from "@/lib/storage";
 import type { ContentAsset } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
 async function getAssets() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-    const res = await fetch(`${baseUrl}/api/assets`, { cache: "no-store" });
-    const assets: ContentAsset[] = res.ok ? await res.json() : [];
+    const assets = await readAllFromStage<ContentAsset>("assets");
+    // Sort by createdAt descending (newest first)
+    assets.sort((a, b) =>
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
     return assets;
   } catch (error) {
     console.error("Failed to fetch assets:", error);
