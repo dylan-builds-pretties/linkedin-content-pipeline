@@ -4,6 +4,78 @@ Copy-paste these prompts when working with Claude Code in this repo.
 
 ---
 
+## Create a New Idea from a Braindump
+
+```
+Create a new idea with this as the braindump:
+
+[PASTE YOUR BRAINDUMP HERE]
+```
+
+This will:
+- Generate a unique ID for the idea
+- Create a new file at content/ideas/[ID].json
+- Use the schema from content/ideas/_example.json
+- Set createdAt and updatedAt to current timestamp
+- **Generate refined notes** that distill the braindump into content angles for social media manager review
+
+### Notes Format
+
+When generating notes, follow this structure to transform CEO/Founder braindumps into actionable content strategy:
+
+```markdown
+## Working Title Options
+Primary: [Main title option]
+Alternatives:
+- [2-4 alternative titles with different tones]
+
+## Refined Core Idea (Clean Thesis)
+[Tightened, publishable articulation of the core insight - 2-3 paragraphs]
+
+## The Foundational Shift (Plain Language)
+[What's actually changing, explained simply - what the bottleneck used to be vs now]
+
+## Core Framework
+[If applicable, break down the main concept into 2-4 layers/categories with:]
+- Best for: [use cases]
+- Examples: [concrete examples]
+- Characteristics: [key traits]
+
+## Simple Summary
+One-paragraph: [Single paragraph distillation]
+
+Bullet Summary:
+- [5-8 key takeaways]
+
+## Content Angles (1-4 Weeks of Material)
+### Angle 1: [Theme]
+- [Post idea 1]
+- [Post idea 2]
+- [Post idea 3]
+Formats: [text posts, carousels, videos, etc.]
+
+### Angle 2: [Theme]
+[Repeat structure]
+
+## Suggested Weekly Breakdown (LinkedIn-First)
+Week 1 - [Theme]
+- Mon: [content type]
+- Tue: [content type]
+- Thu: [content type]
+- Fri: [content type]
+
+[Repeat for 2-4 weeks]
+
+## Next Steps
+- [Option 1: e.g., Turn into flagship article]
+- [Option 2: e.g., Design signature carousel]
+- [Option 3: e.g., Write opening post for series]
+```
+
+The goal is to distill raw braindumps into refined notes that pitch potential content angles, marketing themes, and campaigns for social media manager review.
+
+---
+
 ## Generate LinkedIn Posts from an Idea
 
 ```
