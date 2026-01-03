@@ -1,8 +1,12 @@
-# Pillar's Content Operating System
+# Cadence System
 
-**(High-frequency reminders + low-frequency authority)**
+**High-frequency reminders + low-frequency authority**
 
-At a high level, you want five time horizons, each with a distinct job:
+Elite teams prioritize consistency of thinking, not frequency. This system ensures each layer feeds the next. Nothing is created in isolation.
+
+---
+
+## The Five Time Horizons
 
 | Cadence | Purpose | Audience State |
 |---------|---------|----------------|
@@ -12,8 +16,7 @@ At a high level, you want five time horizons, each with a distinct job:
 | Quarterly | Define the category | "They shape how I think" |
 | Annual | Set the narrative | "They're leading the space" |
 
-**The key insight:**
-Each layer feeds the next. Nothing is created in isolation.
+**The key insight:** Each layer feeds the next. Nothing is created in isolation.
 
 ---
 
@@ -25,13 +28,13 @@ Each layer feeds the next. Nothing is created in isolation.
 
 ### What Daily Content Is (and isn't)
 
-- ❌ Not announcements
-- ❌ Not deep explanations
-- ❌ Not selling
-- ✅ Reminders
-- ✅ Observations
-- ✅ Framing the problem
-- ✅ Showing how Pillar thinks
+- Not announcements
+- Not deep explanations
+- Not selling
+- **Reminders**
+- **Observations**
+- **Framing the problem**
+- **Showing how Pillar thinks**
 
 ### Daily Content Buckets (Rotate)
 
@@ -144,8 +147,7 @@ This is where Pillar stakes intellectual territory.
   - 1 short video
   - 1 webinar or Loom walkthrough
 
-**Quarterly content should feel like:**
-"This didn't come from a blog. This came from operators."
+**Quarterly content should feel like:** "This didn't come from a blog. This came from operators."
 
 ---
 
@@ -155,8 +157,7 @@ This is where Pillar stakes intellectual territory.
 **Time to create:** 1–2 weeks of thinking
 **Goal:** Narrative leadership
 
-This is not a recap.
-It's a positioning document.
+This is not a recap. It's a positioning document.
 
 ### Annual Letter Themes
 
@@ -175,7 +176,7 @@ It's a positioning document.
 
 ---
 
-## How This All Fits Together (The Flywheel)
+## The Content Flywheel
 
 ```
 Daily → Weekly → Monthly → Quarterly → Annual
@@ -193,35 +194,12 @@ Daily → Weekly → Monthly → Quarterly → Annual
 
 ---
 
-## Practical Execution (Small-Team Friendly)
+## Posting Cadence Summary
 
-### Weekly Rhythm (Example)
+For Pillar:
+- 3–5 posts per week
+- Mostly text
+- Occasional diagrams or screenshots
+- Rare "announcement" posts
 
-**Monday**
-- Post short observation
-- Capture notes for weekly post
-
-**Tuesday–Thursday**
-- Daily posts from backlog
-- Light editing
-
-**Friday**
-- Publish weekly post
-- Outline next week's theme
-
-**End of Month**
-- Assemble monthly article from best weekly ideas
-
-**End of Quarter**
-- Choose strongest monthly theme
-- Expand into white paper
-
----
-
-## Content North Star
-
-> If Pillar disappeared tomorrow, people should still say:
->
-> **"They helped me understand how modern real estate teams actually work."**
-
-That's the bar.
+Think: **"Daily field notes from building the future of land acquisition."**
